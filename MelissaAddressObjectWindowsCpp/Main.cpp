@@ -126,7 +126,7 @@ void RunAsConsole(string license, string testAddress, string testCity, string te
 
 		// Print user input
 		cout << "\n============================== INPUTS ==============================\n" << endl;
-		cout << "                  Address Line 1: " + string(dataContainer.Address) << endl;
+		cout << "                         Address: " + string(dataContainer.Address) << endl;
 		cout << "                            City: " + string(dataContainer.City) << endl;
 		cout << "                           State: " + string(dataContainer.State) << endl;
 		cout << "                             Zip: " + string(dataContainer.Zip) << endl;
