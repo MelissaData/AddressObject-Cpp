@@ -1,4 +1,4 @@
-﻿# Name:    MelissaAddressObjectWindowsCpp
+# Name:    MelissaAddressObjectWindowsCpp
 # Purpose: Use the MelissaUpdater to make the MelissaAddressObjectWindowsCpp code usable
 
 ######################### Parameters ##########################
@@ -25,7 +25,7 @@ class DLLConfig {
 
 ######################### Config ###########################
 
-$RELEASE_VERSION = '2023.07'
+$RELEASE_VERSION = '2023.08'
 $ProductName = "DQ_ADDR_DATA"
 
 # Uses the location of the .ps1 file 
@@ -100,10 +100,10 @@ function DownloadDataFiles([string] $license) {
 }
 
 function DownloadDLLs() {
-  Write-Host "MELISSA UPDATER IS DOWNLOADING DLL(s)..."
+  Write-Host "MELISSA UPDATER IS DOWNLOADING DLL(S)..."
   $DLLProg = 0
   foreach ($DLL in $DLLs) {
-    Write-Progress -Activity "Downloading DLL(s)" -Status "$([math]::round($DLLProg / $DLLs.Count * 100, 2))% Complete:"  -PercentComplete ($DLLProg / $DLLs.Count * 100)
+    Write-Progress -Activity "Downloading DLL(S)" -Status "$([math]::round($DLLProg / $DLLs.Count * 100, 2))% Complete:"  -PercentComplete ($DLLProg / $DLLs.Count * 100)
 
     # Check for quiet mode
     if ($quiet) {

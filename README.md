@@ -26,7 +26,7 @@ And return
 
 ## Tested Environments
 - Windows 10 64-bit Microsoft Visual C++ 14.34, Powershell 5.1
-- Melissa data files for 2023-07
+- Melissa data files for 2023-08
 - Nmake 14.34
 - Visual Studio 2022 Developer Command Prompt v17.4.2 64-bit
 
