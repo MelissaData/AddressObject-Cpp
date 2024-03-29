@@ -7,6 +7,8 @@ Please feel free to copy or embed this code to your own project. Happy coding!
 
 For the latest Melissa Address Object release notes, please visit: https://releasenotes.melissa.com/on-premise-api/address-object/
 
+For further details, please visit: https://docs.melissa.com/on-premise-api/address-object/address-object-quickstart.html
+
 The console will ask the user for:
 
 - Address
@@ -26,7 +28,7 @@ And return
 
 ## Tested Environments
 - Windows 10 64-bit Microsoft Visual C++ 14.34, Powershell 5.1
-- Melissa data files for 2024-02
+- Melissa data files for 2024-03
 - Nmake 14.34
 - Visual Studio 2022 Developer Command Prompt v17.4.2 64-bit
 
@@ -99,10 +101,10 @@ Melissa Updater is a CLI application allowing the user to update their Melissa a
 #### Different ways to get data file(s)
 1. Using Melissa Updater
     - It will handle all of the data download/path and dll(s) for you.
-2. If you already have the latest DQS Release (ZIP), you can find the data file(s) and dll(s) in there
-    - Use the location of where you've copied/installed the data and update the "$DataPath" variable in the powershell script.
-    - Navigate into the `MelissaAddressObjectWindowsCpp` project folder, create a folder named `Build`, and copy all the dll(s) mentioned above into the `Build` folder.
-    - Copy all the dependencies mentioned above into the `MelissaAddressObjectWindowsCpp` project folder.
+2. If you already have the latest DQS release zip, you can find the data file(s) and dll(s) in there
+    - Use the location of where you copied/installed the data and update the "$DataPath" variable in the powershell script.
+    - Comment out this line "DownloadDataFiles -license $License" in the powershell script.
+    - This will prevent you from having to redownload all the files.
 
 ## Run Powershell Script
 Parameters:
