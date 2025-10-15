@@ -26,7 +26,7 @@ class DLLConfig {
 
 ######################### Config ###########################
 
-$RELEASE_VERSION = '2025.09'
+$RELEASE_VERSION = '2025.10'
 $ProductName = "DQ_ADDR_DATA"
 
 # Uses the location of the .ps1 file 
