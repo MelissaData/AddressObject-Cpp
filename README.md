@@ -95,8 +95,8 @@ The console will then prompt you with the following warning shown in the image b
 
 #### Download this project
 ```
-git clone https://git.melissadata.com/dtgroup/melissadataobjectexamples/cpp/melissaaddressobjectwindowscpp.git
-cd melissaaddressobjectwindowscpp
+git clone https://github.com/MelissaData/AddressObject-Cpp
+cd AddressObject-Cpp
 ```
 
 #### Set up Melissa Updater
