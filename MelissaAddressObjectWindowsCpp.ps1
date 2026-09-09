@@ -1,5 +1,54 @@
-# Name:    MelissaAddressObjectWindowsCpp
-# Purpose: Use the MelissaUpdater to make the MelissaAddressObjectWindowsCpp code usable
+<#
+.SYNOPSIS
+    Downloads the required components and then builds and runs MelissaAddressObjectWindowsCpp
+
+.DESCRIPTION
+    This script uses the Melissa Updater to fetch the data file(s), the DLL, the C++ headers,
+    and the import library, verifies the DLL, headers, and import library arrived, then builds
+    inside the MSVC build environment and runs it against the supplied address.
+
+    Overall flow:
+      1. Read parameters / prompt for the license and data path.
+      2. Download the data file(s), DLL, headers, and import library via the Melissa Updater.
+      3. Confirm the DLL, headers, and import library are present (data files are not checked).
+      4. Build with nmake (via BuildProgram.ps1) and run (single test address or interactive).
+
+.PARAMETER address
+    Street address to verify.
+
+.PARAMETER city
+    City for the address to verify.
+
+.PARAMETER state
+    State/province for the address to verify.
+
+.PARAMETER zip
+    ZIP/postal code for the address to verify.
+
+.PARAMETER dataPath
+    Path to an existing data files directory. If omitted, the script prompts for
+    a path; pressing Enter at that prompt skips it and downloads the data files
+    into the project's Data folder via the Melissa Updater. A path that does not
+    exist aborts the script.
+
+.PARAMETER license
+    License string. Resolved in this order:
+      1. This parameter.
+      2. An interactive prompt, if the parameter was not supplied.
+      3. The MD_LICENSE environment variable, if the prompt was left blank.
+    Note that the environment variable is the last resort, not the first: running
+    without -license always prompts, even when MD_LICENSE is set.
+
+.PARAMETER quiet
+    Suppresses the Melissa Updater console output during the DLL, header, and import
+    library downloads. The data file download is not affected.
+
+.EXAMPLE
+    .\MelissaAddressObjectWindowsCpp.ps1 -license "your-license"
+
+.EXAMPLE
+    .\MelissaAddressObjectWindowsCpp.ps1 -address "22382 Avenida Empresa" -city "Rancho Santa Margarita" -state "CA" -zip "92688" -license "your-license"
+#>
 
 ######################### Parameters ##########################
 
@@ -15,6 +64,7 @@ param(
 
 ######################### Classes ##########################
 
+# Describes a single file to request from the Melissa Updater
 class DLLConfig {
   [string] $FileName;
   [string] $ReleaseVersion;
@@ -26,6 +76,7 @@ class DLLConfig {
 
 ######################### Config ###########################
 
+# Product release the updater pulls files for
 $RELEASE_VERSION = '2026.08'
 $ProductName = "DQ_ADDR_DATA"
 
@@ -56,6 +107,8 @@ elseif (!(Test-Path $DataPath) -and ($DataPath -ne "$ProjectPath\Data")) {
   exit
 }
 
+# Everything the example needs from the updater: the DLL (into the Build folder),
+# plus the headers and import library the compiler and linker need (into the project folder)
 $DLLs = @(
   [DLLConfig]@{
     FileName       = "mdAddr.dll";
@@ -94,6 +147,7 @@ $DLLs = @(
 
 ######################## Functions #########################
 
+# Download the product data file(s) into $DataPath via the Melissa Updater.
 function DownloadDataFiles([string] $license) {
   $DataProg = 0
   Write-Host "========================== MELISSA UPDATER ========================="
@@ -109,6 +163,8 @@ function DownloadDataFiles([string] $license) {
   Write-Host "Melissa Updater finished downloading data file(s)!"
 }
 
+# Download each entry in $DLLs, routing the DLL to the Build folder and the headers
+# and import library to the project folder (with a progress bar).
 function DownloadDLLs() {
   Write-Host "MELISSA UPDATER IS DOWNLOADING DLL(S)..."
   $DLLProg = 0
@@ -152,6 +208,7 @@ function DownloadDLLs() {
   }
 }
 
+# Verify the DLL, headers, and import library landed where the build expects them
 function CheckDLLs() {
   Write-Host "`nDouble checking dll(s) were downloaded."
   $FileMissing = $false 
@@ -237,11 +294,15 @@ Write-Host "All file(s) have been downloaded/updated!"
 
 # Start program
 # Build project
+# Initializes the MSVC build environment, then hands off to BuildProgram.ps1,
+# which runs nmake against the project's makefile.
 Write-Host "`n=========================== BUILD PROJECT =========================="
 
 cmd.exe /C """$CmdPath"" x86_x64 && Powershell -File BuildProgram.ps1" > $null
 
 # Run Project
+# No address supplied -> run interactively; otherwise pass the address in.
+# The executable is produced into the Build folder by the build step above.
 if ([string]::IsNullOrEmpty($address) -and [string]::IsNullOrEmpty($city) -and [string]::IsNullOrEmpty($state) -and [string]::IsNullOrEmpty($zip)){
 	& $BuildPath\MelissaAddressObjectWindowsCpp.exe --license $License --dataPath $DataPath
 }
